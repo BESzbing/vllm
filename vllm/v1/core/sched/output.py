@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from functools import cached_property
 from typing import TYPE_CHECKING
 
@@ -307,10 +307,6 @@ class SchedulerOutput:
     # Dynamic speculative decoding: optimal K chosen by scheduler.
     # Number of spec tokens to schedule for the next step.
     num_spec_tokens_to_schedule: int = 0
-
-    # Deprecated: cascade attention has been removed, so this is always empty.
-    # Kept for out-of-tree schedulers and workers.
-    num_common_prefix_blocks: list[int] = field(default_factory=list)
 
     @classmethod
     def make_empty(cls) -> "SchedulerOutput":

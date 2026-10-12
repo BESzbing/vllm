@@ -682,7 +682,6 @@ class AttentionMetadataBuilder(ABC, Generic[M]):
     @abstractmethod
     def build(
         self,
-        common_prefix_len: int,
         common_attn_metadata: CommonAttentionMetadata,
         fast_build: bool = False,
     ) -> M:
@@ -690,8 +689,6 @@ class AttentionMetadataBuilder(ABC, Generic[M]):
         Some builders (MLA) require reorder_batch to be called prior to build.
 
         Args:
-            common_prefix_len: Deprecated and always 0. Kept for compatibility
-                with out-of-tree builders.
             common_attn_metadata: The common attention metadata.
             fast_build: The meta-data will prioritize speed of building over
                 then speed at execution. Can be used for spec-decode where the
@@ -721,9 +718,7 @@ class AttentionMetadataBuilder(ABC, Generic[M]):
         Subclasses that override this method should call self.build or
         super().build_for_cudagraph_capture.
         """
-        return self.build(
-            common_prefix_len=0, common_attn_metadata=common_attn_metadata
-        )
+        return self.build(common_attn_metadata=common_attn_metadata)
 
     def build_for_drafting(
         self,
@@ -742,7 +737,6 @@ class AttentionMetadataBuilder(ABC, Generic[M]):
 
         """
         return self.build(
-            common_prefix_len=0,
             common_attn_metadata=common_attn_metadata,
             fast_build=True,
         )
